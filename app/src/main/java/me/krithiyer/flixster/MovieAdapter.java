@@ -1,6 +1,7 @@
 package me.krithiyer.flixster;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import me.krithiyer.flixster.models.Config;
 import me.krithiyer.flixster.models.Movie;
 
@@ -57,16 +59,33 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
 
-        // build url for poster image
-        String imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+        // determine current orientation
+        boolean isPortrait = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
+        String imageURL = null;
+
+        //if in portrait mode, load poster image
+        if (isPortrait) {
+            imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+        } else {
+            // load backdrop
+            imageURL = config.getImageURL(config.getBackdropSize(), movie.getBackdropPath());
+
+        }
+
+        // get correct placeholder and image view
+        int placeholderID = isPortrait ? R.drawable.flicks_movie_placeholder : R.drawable.flicks_backdrop_placeholder;
+        ImageView imageView = isPortrait ? holder.ivPosterImage : holder.ivBackdropImage;
+
         // load image using glide
         Glide.with(context)
                 .load(imageURL)
                 .apply(
-                        RequestOptions.placeholderOf(R.drawable.flicks_movie_placeholder)
-                        .error(R.drawable.flicks_movie_placeholder)
-                                .fitCenter()
-                ).into(holder.ivPosterImage);
+                        RequestOptions.placeholderOf(placeholderID)
+                        .error(placeholderID)
+                                .fitCenter())
+                .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(25, 0)))
+                .into(imageView);
 
     }
     @Override
@@ -80,6 +99,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ImageView ivPosterImage;
         TextView tvTitle;
         TextView tvOverview;
+        ImageView ivBackdropImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -87,6 +107,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             ivPosterImage = (ImageView) itemView.findViewById(R.id.ivPosterImage);
             tvOverview = (TextView) itemView.findViewById(R.id.tvOverview);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            ivBackdropImage = (ImageView) itemView.findViewById(R.id.ivBackdropImage);
         }
     }
 }
