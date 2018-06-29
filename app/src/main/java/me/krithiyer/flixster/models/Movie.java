@@ -9,7 +9,7 @@ public class Movie {
     private String overview;
     private String posterPath; // path not full URL
     private String backdropPath;
-    private int rating;
+    private double rating;
     private String release;
 
     // initialize JSON data
@@ -19,7 +19,7 @@ public class Movie {
         overview = object.getString("overview");
         posterPath = object.getString("poster_path");
         backdropPath = object.getString("backdrop_path");
-        rating = object.getInt("vote_average");
+        rating = object.getDouble("vote_average");
         release = object.getString("release_date");
     }
 
@@ -39,7 +39,7 @@ public class Movie {
         return backdropPath;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 

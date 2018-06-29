@@ -58,7 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         // populate the view with the movie data
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
-        holder.tvRating.setText("Rating: " + Integer.toString(movie.getRating()) + "/10");
+        holder.tvRating.setText("Rating: " + Double.toString(movie.getRating()) + "/10");
         holder.tvReleaseDate.setText(("Released: " + movie.getRelease()));
 
         // determine current orientation
