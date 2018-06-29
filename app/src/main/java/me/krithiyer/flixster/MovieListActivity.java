@@ -94,6 +94,7 @@ public class MovieListActivity extends AppCompatActivity {
         });
     }
 
+
     // get configuration from API
     private void getConfiguration() {
         // url creation

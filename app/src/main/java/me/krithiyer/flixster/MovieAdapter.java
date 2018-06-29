@@ -58,6 +58,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         // populate the view with the movie data
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
+        holder.tvRating.setText("Rating: " + Integer.toString(movie.getRating()) + "/10");
+        holder.tvReleaseDate.setText(("Released: " + movie.getRelease()));
 
         // determine current orientation
         boolean isPortrait = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
@@ -100,6 +102,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         TextView tvTitle;
         TextView tvOverview;
         ImageView ivBackdropImage;
+        TextView tvRating;
+        TextView tvReleaseDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -108,6 +112,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvOverview = (TextView) itemView.findViewById(R.id.tvOverview);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             ivBackdropImage = (ImageView) itemView.findViewById(R.id.ivBackdropImage);
+            tvRating = (TextView) itemView.findViewById(R.id.tvRating);
+            tvReleaseDate = (TextView) itemView.findViewById(R.id.tvReleaseDate);
         }
     }
 }

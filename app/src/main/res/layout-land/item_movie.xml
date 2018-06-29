@@ -29,11 +29,28 @@
 
     <TextView
         android:id="@+id/tvOverview"
-        android:layout_width="101dp"
+        android:layout_width="99dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvTitle"
+        android:layout_below="@+id/tvReleaseDate"
         android:layout_toEndOf="@+id/ivBackdropImage"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@+id/ivBackdropImage"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvReleaseDate"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvTitle"
+        android:layout_below="@+id/tvRating"
+        android:layout_toEndOf="@+id/ivBackdropImage"
+        android:textColor="@android:color/white" />
 </RelativeLayout>
