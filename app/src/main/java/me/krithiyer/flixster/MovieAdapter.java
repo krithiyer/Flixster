@@ -1,0 +1,92 @@
+package me.krithiyer.flixster;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.util.ArrayList;
+
+import me.krithiyer.flixster.models.Config;
+import me.krithiyer.flixster.models.Movie;
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+
+    // list of movies
+    ArrayList<Movie> movies;
+    // config needed for image URL
+    Config config;
+    // context for rendering
+    Context context;
+
+    public Config getConfig() {
+      return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
+    // initialize with list
+    public MovieAdapter(ArrayList<Movie> movie) {
+        this.movies = movie;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // get context and create inflator
+        context = parent.getContext();
+        LayoutInflater inflator = LayoutInflater.from(context);
+        // create view
+        View movieView = inflator.inflate(R.layout.item_movie, parent, false);
+        // return new ViewHolder
+        return new ViewHolder(movieView);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        // get movie data at a specific index
+        Movie movie = movies.get(position);
+        // populate the view with the movie data
+        holder.tvTitle.setText(movie.getTitle());
+        holder.tvOverview.setText(movie.getOverview());
+
+        // build url for poster image
+        String imageURL = config.getImageURL(config.getPosterSize(), movie.getPosterPath());
+        // load image using glide
+        Glide.with(context)
+                .load(imageURL)
+                .apply(
+                        RequestOptions.placeholderOf(R.drawable.flicks_movie_placeholder)
+                        .error(R.drawable.flicks_movie_placeholder)
+                                .fitCenter()
+                ).into(holder.ivPosterImage);
+
+    }
+    @Override
+    public int getItemCount() {
+        return movies.size();
+    }
+
+    // create the viewholder as a static inner class
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // track view objects
+        ImageView ivPosterImage;
+        TextView tvTitle;
+        TextView tvOverview;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            // lookup view objects
+            ivPosterImage = (ImageView) itemView.findViewById(R.id.ivPosterImage);
+            tvOverview = (TextView) itemView.findViewById(R.id.tvOverview);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+        }
+    }
+}

@@ -2,6 +2,8 @@ package me.krithiyer.flixster;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import me.krithiyer.flixster.models.Movie;
-
+import me.krithiyer.flixster.models.Config;
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -31,12 +33,14 @@ public class MovieListActivity extends AppCompatActivity {
 
     // instance fields
     AsyncHttpClient client;
-    // base image URL
-    String baseImageURL;
-    // poster size
-    String posterSize;
     // list of currently playing movies
     ArrayList<Movie> movies;
+    // recycler view
+    RecyclerView rvMovies;
+    // adapter wired to recycler view
+    MovieAdapter adapter;
+    // image config
+    Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +50,15 @@ public class MovieListActivity extends AppCompatActivity {
         client = new AsyncHttpClient();
         // initialize movies list
         movies = new ArrayList<>();
+        // initialize adapter
+        adapter = new MovieAdapter(movies);
 
-        // cofigure on app creation
+        // resolve recycler view, connect layout manager and adapter
+        rvMovies = findViewById(R.id.rvMovies);
+        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        rvMovies.setAdapter(adapter);
+
+        // configure on app creation
         getConfiguration();
     }
 
@@ -67,12 +78,13 @@ public class MovieListActivity extends AppCompatActivity {
                     for (int i = 0; i < results.length(); i++) {
                         Movie movie = new Movie(results.getJSONObject(i));
                         movies.add(movie);
+                        // notify adapter of row added
+                        adapter.notifyItemInserted(movies.size() - 1);
                     }
                     Log.i(TAG, String.format("Loaded %s movies", results.length()));
                 } catch (JSONException e) {
                     logError("Failed to parse now playing movies", e, true);
                 }
-
 
             }
             @Override
@@ -95,13 +107,10 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    JSONObject images = response.getJSONObject("images");
-                    // getting image base URL from JSON format
-                    baseImageURL = images.getString("secure_base_url");
-                    // getting poster size from JSON format
-                    JSONArray posterSizeOptions = images.getJSONArray("poster_sizes");
-                    posterSize = posterSizeOptions.optString(2, "w342");
-                    Log.i(TAG, String.format("Loaded configuration with baseImageURL %s and posterSize %s", baseImageURL, posterSize ));
+                    config = new Config(response);
+                    Log.i(TAG, String.format("Loaded configuration with baseImageURl %s and posterSize %s",
+                            config.getBaseImageURL(), config.getPosterSize()));
+                    adapter.setConfig(config);
                     // get now playing movie list
                     getNowPlaying();
                 } catch (JSONException e) {

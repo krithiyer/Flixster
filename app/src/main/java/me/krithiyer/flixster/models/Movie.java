@@ -6,27 +6,27 @@ import org.json.JSONObject;
 public class Movie {
     // API values
     private String title;
-    private String synopsis;
+    private String overview;
     private String posterPath; // path not full URL
+
+    // initialize JSON data
+    public Movie(JSONObject object) throws JSONException {
+        // input data
+        title = object.getString("title");
+        overview = object.getString("overview");
+        posterPath = object.getString("poster_path");
+    }
 
     public String getTitle() {
         return title;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public String getOverview() {
+        return overview;
     }
 
     public String getPosterPath() {
         return posterPath;
     }
 
-    // initialize JSON data
-    public Movie(JSONObject o) throws JSONException {
-        // input data
-        title = o.getString("title");
-
-        synopsis = o.getString("overview");
-        posterPath = o.getString("poster_path");
-    }
 }
