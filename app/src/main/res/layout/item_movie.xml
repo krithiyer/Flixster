@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <ImageView
@@ -19,15 +20,18 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivPosterImage"
         android:text="Movie Title"
-        android:textAppearance="@android:style/TextAppearance.Large" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/tvOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/tvTitle"
         android:layout_toEndOf="@+id/ivPosterImage"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="Movie summary and overview" />
+        android:text="Movie summary and overview"
+        android:textColor="@android:color/white" />
+
 </RelativeLayout>
