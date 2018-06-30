@@ -62,6 +62,7 @@
         android:layout_marginStart="18dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
+        android:layout_gravity="center"
         app:srcCompat="@drawable/play_button" />
 
 
