@@ -29,8 +29,6 @@ public class MovieListActivity extends AppCompatActivity {
     public final static String API_BASE_URL = "https://api.themoviedb.org/3";
     // API key parameter
     public final static String API_KEY_PARAM = "api_key";
-    // Youtube API key parameter
-    public final static String API_YOUTUBE_KEY = "youtube_api_key";
     // logging in this activity
     public final static String TAG = "MovieListActivity";
 
@@ -77,7 +75,7 @@ public class MovieListActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         // API key always required
         params.put(API_KEY_PARAM, getString(R.string.api_key));
-        client.get(url, params, new JsonHttpResponseHandler() { // https://api.themoviedb.org/3/movie/351286/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed
+        client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // load results into Movie
