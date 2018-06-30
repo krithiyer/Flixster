@@ -2,15 +2,20 @@ package me.krithiyer.flixster.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class Movie {
     // API values
-    private String title;
-    private String overview;
-    private String posterPath; // path not full URL
-    private String backdropPath;
-    private double rating;
-    private String release;
+     String title;
+     String overview;
+     String posterPath; // path not full URL
+     String backdropPath;
+     double rating;
+     String release;
+     int id;
+
+     public Movie() {}
 
     // initialize JSON data
     public Movie(JSONObject object) throws JSONException {
@@ -21,6 +26,7 @@ public class Movie {
         backdropPath = object.getString("backdrop_path");
         rating = object.getDouble("vote_average");
         release = object.getString("release_date");
+        id = object.getInt("id");
     }
 
     public String getTitle() {
@@ -45,5 +51,9 @@ public class Movie {
 
     public String getRelease() {
         return release;
+    }
+
+    public int getId() {
+        return id;
     }
 }

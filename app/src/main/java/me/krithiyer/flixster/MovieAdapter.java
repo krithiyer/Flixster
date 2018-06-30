@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get movie data at a specific index
-        Movie movie = movies.get(position);
+        final Movie movie = movies.get(position);
         // populate the view with the movie data
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
@@ -78,6 +79,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         // get correct placeholder and image view
         int placeholderID = isPortrait ? R.drawable.flicks_movie_placeholder : R.drawable.flicks_backdrop_placeholder;
         ImageView imageView = isPortrait ? holder.ivPosterImage : holder.ivBackdropImage;
+
+        holder.ibPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MovieListActivity) context).playYoutubeVideo(movie.getId());
+            }
+        });
 
         // load image using glide
         Glide.with(context)
@@ -104,6 +112,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ImageView ivBackdropImage;
         TextView tvRating;
         TextView tvReleaseDate;
+        ImageButton ibPlay;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +123,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             ivBackdropImage = (ImageView) itemView.findViewById(R.id.ivBackdropImage);
             tvRating = (TextView) itemView.findViewById(R.id.tvRating);
             tvReleaseDate = (TextView) itemView.findViewById(R.id.tvReleaseDate);
+            ibPlay =  (ImageButton) itemView.findViewById((R.id.ibPlay));
+
         }
     }
 }

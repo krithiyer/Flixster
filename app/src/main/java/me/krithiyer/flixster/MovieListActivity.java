@@ -1,5 +1,6 @@
 package me.krithiyer.flixster;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +19,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
-import me.krithiyer.flixster.models.Movie;
 import me.krithiyer.flixster.models.Config;
+import me.krithiyer.flixster.models.Movie;
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class MovieListActivity extends AppCompatActivity {
     public final static String API_BASE_URL = "https://api.themoviedb.org/3";
     // API key parameter
     public final static String API_KEY_PARAM = "api_key";
+    // Youtube API key parameter
+    public final static String API_YOUTUBE_KEY = "youtube_api_key";
     // logging in this activity
     public final static String TAG = "MovieListActivity";
 
@@ -60,6 +63,46 @@ public class MovieListActivity extends AppCompatActivity {
 
         // configure on app creation
         getConfiguration();
+    }
+
+    // playing Youtube video fullscreen
+     public void playYoutubeVideo(int id) {
+
+        // take a movie ID (from the now_playing endpoint)
+        // resolve the youtube key using that movie id
+
+
+        String url = API_BASE_URL + "/movie/"+id+"/videos";
+        // set request parameters
+        RequestParams params = new RequestParams();
+        // API key always required
+        params.put(API_KEY_PARAM, getString(R.string.api_key));
+        client.get(url, params, new JsonHttpResponseHandler() { // https://api.themoviedb.org/3/movie/351286/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // load results into Movie
+                try {
+                    JSONArray results = response.getJSONArray("results");
+                    String youtubeKey = results.getJSONObject(0).getString("key");
+                    Intent i = new Intent(MovieListActivity.this, MovieTrailerActivity.class);
+                    i.putExtra("youtubeKey", youtubeKey);
+                    startActivity(i);
+
+
+
+                } catch (JSONException e) {
+                    logError("Failed to play video", e, true);
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                logError("Failed to play video", throwable, true);
+            }
+        });
+
+
     }
 
     // get list of currently playing movies from API
