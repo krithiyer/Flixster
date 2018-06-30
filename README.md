@@ -28,7 +28,7 @@ Here's a walkthrough of implemented user stories:
 
 ![Runthrough](runthrough.gif) 
 
-GIF created with [RecordIt] (http://recordit.co/).
+GIF created with [RecordIt](http://recordit.co/).
 
 ## Notes
 
